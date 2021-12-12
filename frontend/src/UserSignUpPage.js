@@ -58,7 +58,7 @@ class UserSignUpPage extends Component {
             password: this.state.password
         }
         event.preventDefault();
-        axios.post('http://localhost:7777/api/1.0/users', body);
+        axios.post('/api/1.0/users', body);
     }
 }
 
