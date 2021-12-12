@@ -10,30 +10,36 @@ class UserSignUpPage extends Component {
     }
 
     render() {
-        return (<div>
-            <h1>Sign Up</h1>
+        return (<div className={"container"}>
+            <h1 className={""}>Sign Up</h1>
             <form>
-                <div>
+                <div className={"form-group"}>
                     <label htmlFor="username">Username</label>
-                    <input type="text" id={'username'} name={'username'} onChange={this.onChangeUsername}/>
+                    <input className={"form-control"} type="text" id={'username'} name={'username'}
+                           onChange={this.onChangeUsername}/>
                 </div>
-                <div>
+                <div className={"form-group"}>
                     <label htmlFor="displayName">Display Name</label>
-                    <input type="text" id={'displayName'} onChange={this.onChangeUsername} name={'displayName'}/>
+                    <input className={"form-control"} type="text" id={'displayName'} onChange={this.onChangeUsername}
+                           name={'displayName'}/>
                 </div>
-                <div>
+                <div className={"form-group"}>
                     <label htmlFor="password">Password</label>
-                    <input type="password" id={'password'} onChange={this.onChangeUsername} name={'password'}/>
+                    <input className={"form-control"} type="password" id={'password'} onChange={this.onChangeUsername}
+                           name={'password'}/>
                 </div>
-                <div>
+                <div className={"form-group"}>
                     <label htmlFor="passwordRepeat">Repeat Password</label>
-                    <input type="password" id={'passwordRepeat'} onChange={this.onChangeUsername}
+                    <input className={"form-control"} type="password" id={'passwordRepeat'}
+                           onChange={this.onChangeUsername}
                            name={'passwordRepeat'}/>
                 </div>
                 <div>
-                    <input onChange={this.onChangeCheckbox} id={'agreed'} name={'agreed'} type="checkbox"/> Agreed
-                    <br/>
-                    <button onClick={this.submit} disabled={!this.state.agreed}>Sign Up</button>
+                    <input onChange={this.onChangeCheckbox} id={'agreed'} name={'agreed'}
+                           type="checkbox"/> <label htmlFor={"agreed"}>Agreed</label>
+                    <button className={"btn btn-primary ml-2"} onClick={this.submit} disabled={!this.state.agreed}>
+                        Sign Up
+                    </button>
                 </div>
             </form>
         </div>);
