@@ -7,32 +7,44 @@ class UserSignUpPage extends Component {
         displayName: "",
         password: "",
         agreed: false,
-        pendingApiCall: false
+        pendingApiCall: false,
+        errors: {
+            username: "",
+            password: "",
+            displayName: ""
+        }
     }
 
     render() {
-        const {pendingApiCall} = this.state;
+        const {pendingApiCall, errors} = this.state;
         return (<div className={"container"}>
-            <h1 className={""}>Sign Up</h1>
+            <h1>Sign Up</h1>
             <form>
                 <div className={"form-group"}>
                     <label htmlFor="username">Username</label>
-                    <input className={"form-control"} type="text" id={'username'} name={'username'}
+                    <input className={errors.username ? "form-control is-invalid" : "form-control"} type="text"
+                           id={'username'} name={'username'}
                            onChange={this.onChangeUsername}/>
+                    <div className={"invalid-feedback"}>{errors.username}</div>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor="displayName">Display Name</label>
-                    <input className={"form-control"} type="text" id={'displayName'} onChange={this.onChangeUsername}
+                    <input className={errors.displayName ? "form-control is-invalid" : "form-control"} type="text"
+                           id={'displayName'} onChange={this.onChangeUsername}
                            name={'displayName'}/>
+                    <div className={"invalid-feedback"}>{errors.displayName}</div>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor="password">Password</label>
-                    <input className={"form-control"} type="password" id={'password'} onChange={this.onChangeUsername}
+                    <input className={errors.password ? "form-control is-invalid" : "form-control"} type="password"
+                           id={'password'} onChange={this.onChangeUsername}
                            name={'password'}/>
+                    <div className={"invalid-feedback"}>{errors.password}</div>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor="passwordRepeat">Repeat Password</label>
-                    <input className={"form-control"} type="password" id={'passwordRepeat'}
+                    <input className={"form-control"} type="password"
+                           id={'passwordRepeat'}
                            onChange={this.onChangeUsername}
                            name={'passwordRepeat'}/>
                 </div>
@@ -51,7 +63,10 @@ class UserSignUpPage extends Component {
 
     onChangeUsername = event => {
         const {value, name} = event.target;
+        const errors = {...this.state.errors};
+        errors[name] = undefined;
         this.setState({
+            errors,
             [name]: value
         });
     }
@@ -73,23 +88,16 @@ class UserSignUpPage extends Component {
             const response = await signUp(body);
 
         } catch (e) {
-
+            if (e.response.data.validationErrors) {
+                const {validationErrors} = e.response.data;
+                this.setState({
+                    errors: validationErrors
+                });
+            }
         }
         this.setState({
             pendingApiCall: false
         });
-
-        // signUp(body).then((response) => {
-        //     this.setState({
-        //         pendingApiCall: false
-        //     });
-        // })
-        // .catch((error) => {
-        //     this.setState({
-        //         pendingApiCall: false
-        //     });
-        // });
-        ;
     }
 }
 
