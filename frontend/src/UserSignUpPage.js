@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from "axios";
+import {signUp} from "./apiCall";
 
 class UserSignUpPage extends Component {
     state = {
@@ -11,6 +11,7 @@ class UserSignUpPage extends Component {
     }
 
     render() {
+        const {pendingApiCall} = this.state;
         return (<div className={"container"}>
             <h1 className={""}>Sign Up</h1>
             <form>
@@ -39,8 +40,8 @@ class UserSignUpPage extends Component {
                     <input onChange={this.onChangeCheckbox} id={'agreed'} name={'agreed'}
                            type="checkbox"/> <label htmlFor={"agreed"}>Agreed</label>
                     <button className={"btn btn-primary ml-2"} onClick={this.submit}
-                            disabled={this.state.pendingApiCall || !this.state.agreed}>
-                        {this.state.pendingApiCall && <span className={'spinner-border spinner-border-sm mr-1'}></span>}
+                            disabled={pendingApiCall || !this.state.agreed}>
+                        {pendingApiCall && <span className={'spinner-border spinner-border-sm mr-1'}></span>}
                         Sign Up
                     </button>
                 </div>
@@ -60,25 +61,35 @@ class UserSignUpPage extends Component {
             [name]: checked
         });
     }
-    submit = event => {
+    submit = async event => {
+        event.preventDefault();
+        this.setState({pendingApiCall: true});
         const body = {
             username: this.state.username,
             displayName: this.state.displayName,
             password: this.state.password
         }
-        event.preventDefault();
-        this.setState({pendingApiCall: true});
-        axios.post('/api/1.0/users', body)
-            .then((response) => {
-                this.setState({
-                    pendingApiCall: false
-                });
-            })
-            .catch((error) => {
-                this.setState({
-                    pendingApiCall: false
-                });
-            });
+        try {
+            const response = await signUp(body);
+
+        } catch (e) {
+
+        }
+        this.setState({
+            pendingApiCall: false
+        });
+
+        // signUp(body).then((response) => {
+        //     this.setState({
+        //         pendingApiCall: false
+        //     });
+        // })
+        // .catch((error) => {
+        //     this.setState({
+        //         pendingApiCall: false
+        //     });
+        // });
+        ;
     }
 }
 
