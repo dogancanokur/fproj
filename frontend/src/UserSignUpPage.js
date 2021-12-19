@@ -6,7 +6,8 @@ class UserSignUpPage extends Component {
         username: "",
         displayName: "",
         password: "",
-        agreed: false
+        agreed: false,
+        pendingApiCall: false
     }
 
     render() {
@@ -37,7 +38,9 @@ class UserSignUpPage extends Component {
                 <div>
                     <input onChange={this.onChangeCheckbox} id={'agreed'} name={'agreed'}
                            type="checkbox"/> <label htmlFor={"agreed"}>Agreed</label>
-                    <button className={"btn btn-primary ml-2"} onClick={this.submit} disabled={!this.state.agreed}>
+                    <button className={"btn btn-primary ml-2"} onClick={this.submit}
+                            disabled={this.state.pendingApiCall || !this.state.agreed}>
+                        {this.state.pendingApiCall && <span className={'spinner-border spinner-border-sm mr-1'}></span>}
                         Sign Up
                     </button>
                 </div>
@@ -64,7 +67,18 @@ class UserSignUpPage extends Component {
             password: this.state.password
         }
         event.preventDefault();
-        axios.post('/api/1.0/users', body);
+        this.setState({pendingApiCall: true});
+        axios.post('/api/1.0/users', body)
+            .then((response) => {
+                this.setState({
+                    pendingApiCall: false
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    pendingApiCall: false
+                });
+            });
     }
 }
 
