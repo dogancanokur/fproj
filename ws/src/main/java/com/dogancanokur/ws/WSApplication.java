@@ -12,16 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WSApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WSApplication.class, args);
+	SpringApplication.run(WSApplication.class, args);
     }
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+	return new ModelMapper();
     }
 
     @Bean
     PasswordEncoder getEncoder() {
-        return new BCryptPasswordEncoder();
+	return new BCryptPasswordEncoder();
     }
 }
